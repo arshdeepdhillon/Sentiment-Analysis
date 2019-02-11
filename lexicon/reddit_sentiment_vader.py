@@ -1,57 +1,62 @@
-# import sys
-# sys.path.insert(0, '../extract_data')
-# import extract_reddit_comments as RDT
+import sys
+sys.path.insert(0, '../extract_data')
+import extract_reddit_comments as RDT
+
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from nltk import tokenize
+import timeit
 
 
 
-'''
-    positive sentiment: compound score >= 0.05
-    neutral sentiment:  (compound score > -0.05) and (compound score < 0.05)
-    negative sentiment: compound score <= -0.05
-'''
-# print(sys.executable)
-# print(sys.version)
-# print(sys.path)
-analyzer = SentimentIntensityAnalyzer()
+def getRedditData():
+    rd = RDT.Extract()
+    rd.getComments()
 
-threshold = 0.5
-nPosCorrect = 0
-nPosCount = 0
-with open("positive.txt", "r") as f:
-    for line in f:
-        vs = analyzer.polarity_scores(line)
-        if vs['compound'] >= threshold or vs['compound'] <= -threshold:
-            if vs['compound'] > 0:
-                nPosCorrect += 1
-            nPosCount += 1
-        # breaking paragraph into sentences
-        paragraphSentiments = 0.0
-        sentence_list = tokenize.sent_tokenize(line)
+def VaderAnalysis():
+    getRedditData()
+    analyzer = SentimentIntensityAnalyzer()
+    threshold = 0.09 # accuracy is good when threshold is close to 0.09
+    nPosCorrect = 0
+    nPosCount = 0
 
-        for sentence in sentence_list:
-            if len(sentence) > 1:
-                vs = analyzer.polarity_scores(sentence)
-                # print("{:-<69} {}".format(sentence[:min(30,len(sentence))], str(vs["compound"])))
-                print(">>>> {:-<69} {}".format(sentence, str(vs["compound"])))
-                paragraphSentiments += vs["compound"]
-        print("\tAVERAGE SENTIMENT FOR PARAGRAPH: \t" + str(round(paragraphSentiments / len(sentence_list), 4))+ "\n\n")
-        # exit()
+    with open("comments_extracted/output.txt", "r") as f:
+    # with open("positive.txt", "r") as f:
+        startP = timeit.default_timer()
+        for line in f:
+
+            vs = analyzer.polarity_scores(line)
+            if not vs['neg'] > threshold:
+                if vs['pos'] - vs['neg'] > 0:
+                    nPosCorrect += 1
+                nPosCount += 1
+        stopP = timeit.default_timer()
+
+    nNegCorrect = 0
+    nNegCount = 0
+
+    with open("comments_extracted/output.txt", "r") as f:
+    # with open("negative.txt", "r") as f:
+        startN = timeit.default_timer()
+        for line in f:
+            vs = analyzer.polarity_scores(line)
+            if not vs['pos'] > threshold:
+                if vs['pos'] - vs['neg'] <= 0:
+                    nNegCorrect += 1
+                nNegCount += 1
+        stopN = timeit.default_timer()
 
 
-nNegCorrect = 0
-nNegCount = 0
-with open("negative.txt", "r") as f:
-    for line in f:
-        vs = analyzer.polarity_scores(line)
-        if vs['compound'] >= threshold or vs['compound'] <= -threshold:
-            if vs['compound'] <= 0:
-                nNegCorrect += 1
-            nNegCount += 1
+    print("\nFinished in {:0.4f} sec".format(stopP-startP + stopP-startP))
+    print("Positive " + percentage(nNegCorrect,nNegCount))
+    print("Negative " + percentage(nPosCorrect,nPosCount))
 
-print("Positive accuracy = {}% via {} samples".format(nPosCorrect/nPosCount*100.0, nPosCount))
-print("Negative accuracy = {}% via {} samples".format(nNegCorrect/nNegCount*100.0, nNegCount))
+def percentage(nCorrect, nCounted):
+    return ("Accuracy is {:0.4f}% via {} samples".format(nCorrect/nCounted*100.0, nCounted))
+
+VaderAnalysis()
+
+
+
+
 
 
 
@@ -66,6 +71,7 @@ print("Negative accuracy = {}% via {} samples".format(nNegCorrect/nNegCount*100.
 
 
 """
+# from nltk import tokenize
 threshold = 0.5
 nPosCorrect = 0
 nPosCount = 0
@@ -83,7 +89,7 @@ with open("positive.txt", "r") as f:
         # sentence_list = tokenize.sent_tokenize(line)
         # for sentence in sentence_list:
         #     vs = analyzer.polarity_scores(sentence)
-        #     print("{:-<69} {}".format(sentence[:min(30,len(sentence))], str(vs["compound"])))
+        #     print("{:-<69} {}".format(sentence, str(vs["compound"])))
         #     paragraphSentiments += vs["compound"]
         # print("\t\tAVERAGE SENTIMENT FOR PARAGRAPH: \t" + str(round(paragraphSentiments / len(sentence_list), 4)))
 
@@ -100,6 +106,7 @@ with open("negative.txt", "r") as f:
 print("Positive accuracy = {}% via {} samples".format(nPosCorrect/nPosCount*100.0, nPosCount))
 print("Negative accuracy = {}% via {} samples".format(nNegCorrect/nNegCount*100.0, nNegCount))
 """
+
 
 
 
@@ -180,7 +187,7 @@ print(analysis2.sentiment)
 
 
 
-'''
+"""
 import praw
 from textblob import TextBlob
 import math
@@ -201,9 +208,18 @@ for submission in hotPython:
         for comment in comments:
             # print(20*'-')
             print(comment.body)
-'''
+"""
 
-'''
+
+
+
+
+
+
+
+
+
+"""
 import datetime
 sTimeStamp = datetime.datetime(2010, 12, 1, 0, 0).timestamp()
 eTimeStamp = datetime.datetime(2018, 12, 1, 0, 0).timestamp()
@@ -242,4 +258,4 @@ with open("C:\\Users\\arshdeep.dhillon1\\Desktop\\cpsc571\\Practice Code\\Sentim
             print("Ratio: " + str(math.floor(subSentiment/nComments * 100)) + "\n")
         except:
             print("Unable to calculate sentiment of each subreddit")
-'''
+"""

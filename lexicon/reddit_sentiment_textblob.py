@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0, '../extract_data')
 import extract_reddit_comments as RDT
-
+import timeit
 from textblob import TextBlob
 
 def getRedditData():
@@ -9,17 +9,16 @@ def getRedditData():
     rd.getComments()
 
 
-def percentage(nCorrect, nCounted):
-    return ("Accuracy = {}% via {} samples".format(nCorrect/nCounted*100.0, nCounted))
-
-def patternAnalyzer_Textblob(): #default
-    # getRedditData()
+def TextblobAnalysis(): #default
+    getRedditData()
     nPosCorrect = 0
     nPosCount = 0
     bla = 0.005
 
-    with open("positive.txt", "r") as f:
-        # for line in f.read().split('\n'):
+    with open("comments_extracted/output.txt", "r") as f:
+    # with open("positive.txt", "r") as f:
+
+        startP = timeit.default_timer()
         for line in f:
             # print(line)
             analysis = TextBlob(line)
@@ -27,24 +26,30 @@ def patternAnalyzer_Textblob(): #default
                 if analysis.sentiment.polarity > 0:
                     nPosCorrect += 1
                 nPosCount += 1
-
+        stopP = timeit.default_timer()
 
     nNegCorrect = 0
     nNegCount = 0
-    with open("negative.txt", "r") as f:
+    with open("comments_extracted/output.txt", "r") as f:
+    # with open("negative.txt", "r") as f:
+
+        startN = timeit.default_timer()
         for line in f:
             analysis = TextBlob(line)
             if analysis.sentiment.polarity <= -bla:
                 if analysis.sentiment.polarity <= 0:
                     nNegCorrect += 1
                 nNegCount += 1
+        stopN = timeit.default_timer()
 
+    print("\nFinished in {:0.4f} sec".format(stopP-startP + stopP-startP))
     print("Positive " + percentage(nNegCorrect,nNegCount))
     print("Negative " + percentage(nPosCorrect,nPosCount))
 
+def percentage(nCorrect, nCounted):
+    return ("Accuracy is {:0.4f}% via {} samples".format(nCorrect/nCounted*100.0, nCounted))
 
-patternAnalyzer_Textblob()
-# def overRideTextblob(): #NaiveBayesAnalyzer
+TextblobAnalysis()
 
 
 
