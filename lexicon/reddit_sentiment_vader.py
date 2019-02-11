@@ -18,8 +18,8 @@ def VaderAnalysis():
     nPosCorrect = 0
     nPosCount = 0
 
-    with open("comments_extracted/output.txt", "r") as f:
-    # with open("positive.txt", "r") as f:
+    # with open("comments_extracted/output.txt", "r") as f:
+    with open("positive.txt", "r") as f:
         startP = timeit.default_timer()
         for line in f:
 
@@ -33,8 +33,8 @@ def VaderAnalysis():
     nNegCorrect = 0
     nNegCount = 0
 
-    with open("comments_extracted/output.txt", "r") as f:
-    # with open("negative.txt", "r") as f:
+    # with open("comments_extracted/output.txt", "r") as f:
+    with open("negative.txt", "r") as f:
         startN = timeit.default_timer()
         for line in f:
             vs = analyzer.polarity_scores(line)
@@ -48,6 +48,22 @@ def VaderAnalysis():
     print("\nFinished in {:0.4f} sec".format(stopP-startP + stopP-startP))
     print("Positive " + percentage(nNegCorrect,nNegCount))
     print("Negative " + percentage(nPosCorrect,nPosCount))
+
+    # plotting data
+    import matplotlib.pyplot as plt
+
+    # declare variables
+    labels = 'Positive', 'Neutral'
+    sizes = [nPosCorrect, nNegCorrect]
+    colors = ['green', 'red']
+
+    # using matplotlib to plot the data
+    plt.pie(sizes, labels = labels, colors = colors, shadow = True, startangle = 90)
+    strg = str("Sentiment of {} positives and {} negatives").format(nPosCount,nPosCount)
+    plt.title(strg)
+    plt.show()
+
+
 
 def percentage(nCorrect, nCounted):
     return ("Accuracy is {:0.4f}% via {} samples".format(nCorrect/nCounted*100.0, nCounted))
