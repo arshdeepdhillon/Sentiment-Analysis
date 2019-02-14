@@ -25,6 +25,7 @@ class Extract:
         self.parsed_files = {}
 
 
+
     def getData(self):
         """Purpose is to format the raw reddit data into a json like format.
 
@@ -92,8 +93,15 @@ class Extract:
 
         try:
             import string
+            import re # to filter comments
+            import nltk
+            from nltk.corpus import stopwords
+            from nltk.tokenize import word_tokenize
+
             with open(self.comments_parsed_path + "output.txt", "w") as f:
                 # print(dicList)
+                # punct = (string.punctuation).replace('!', "")
+                # regex = re.compile('[%s]' % re.escape(punct))
 
                 # for each formatted file...
                 for _, dicComments in dicList.items():
@@ -106,15 +114,41 @@ class Extract:
                         # for each comment in the array, write its body to the file
                         for comment in values:
 
-                            s = comment["body"].strip().replace("\n", "")
+                            s = comment["body"].strip().replace("\n", " ")
+                            # s = s.replace("\r", " ")
+                            # filter data
+                            s = s.lower()
 
+                            # remove all the non legal chars (remove all the punctuations)
+                            # s = re.sub(r'\d+', '',s)
+                            # s = regex.sub('',s)
+
+                            # remove all characters that are not english letters and space
+                            # and replace them with an empty string
+                            s = re.sub('[^a-zA-Z! ]+','',s)
+
+                            #remove stop words
+                            stop_words = set(stopwords.words('english'))
+                            words = word_tokenize(s)
+                            """
+                            filtered_sentence = []
+                            for w in words:
+                                if w not in stop_words:
+                                    filtered_sentence.append(w)
+                            """
+
+                            filtered_sentence = [w for w in words if w not in stop_words]
+                            filtered_sentence = " ".join(filtered_sentence)
+                            print(filtered_sentence)
+                            # exit()
                             printable = set(string.printable)
-                            for chr in filter(lambda x: x in printable, s):
+                            for chr in filter(lambda x: x in printable, filtered_sentence):
                                 f.write(chr)
 
                             f.write("\n")
 
         except Exception as e:
+            print(e)
             with open(self.comments_parsed_path + "output.txt", "a") as f:
                 f.write("**ERROR MESSAGE: encoding issue**" + str(e))
 
@@ -122,9 +156,10 @@ class Extract:
 
 
 # uncomment the below lines to run the program
-
-'''redditComments = Extract()
-redditComments.getComments()'''
+"""
+redditComments = Extract()
+redditComments.getComments()
+"""
 
 
 
