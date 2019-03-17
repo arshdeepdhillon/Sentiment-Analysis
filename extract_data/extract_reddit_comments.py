@@ -9,12 +9,14 @@ class Extract:
 
     def __init__(self):
 
-        # raw reddit data is store in this folder
+        # raw reddit data is stored in this folder
         self.raw_path = "../raw_data/"
+
+        # uncomment the raw_path variable and comment the raw_path variable to run the test files
         # self.raw_path = "__test__Raw Data/"
 
 
-        # once each raw data file is formatted into a json format, it is store under json_formatted_path folder
+        # once each raw data file is formatted into a json format, it is stored in json_formatted_path folder
         self.json_formatted_path = "json_formatted_data/"
 
 
@@ -99,9 +101,6 @@ class Extract:
             from nltk.tokenize import word_tokenize
 
             with open(self.comments_parsed_path + "output.txt", "w") as f:
-                # print(dicList)
-                # punct = (string.punctuation).replace('!', "")
-                # regex = re.compile('[%s]' % re.escape(punct))
 
                 # for each formatted file...
                 for _, dicComments in dicList.items():
@@ -139,8 +138,7 @@ class Extract:
 
                             filtered_sentence = [w for w in words if w not in stop_words]
                             filtered_sentence = " ".join(filtered_sentence)
-                            print(filtered_sentence)
-                            # exit()
+                            # print(filtered_sentence)
                             printable = set(string.printable)
                             for chr in filter(lambda x: x in printable, filtered_sentence):
                                 f.write(chr)
