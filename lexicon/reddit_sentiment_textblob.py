@@ -26,9 +26,9 @@ class TxtBlob:
         self.getRedditData()
 
         # since textblob doesn't explicitly give a positive, neutral and negative value
-        # I have set a compoundScore var that is slightly different than vader's
+        # I have set a compoundScore var that is similar ad vader's
         # compoundScore (which is set to 0.05).
-        compoundScore = 0.005
+        compoundScore = 0.05
 
         # check for positive text
         nPosCorrect = 0
@@ -69,14 +69,14 @@ class TxtBlob:
             for line in f:
                 analysis = TextBlob(line)
                 if analysis.sentiment.polarity <= -compoundScore:
+                    nNegCount += 1
                     if analysis.sentiment.polarity <= 0:
                         nNegCorrect += 1
-                    nNegCount += 1
             stopNeg = timeit.default_timer()
 
         print("\nFinished in {:0.4f} sec".format(stopPos-startPos + stopNeut-startNeut + stopNeg-startNeg))
         print("Positive " + self.percentage(nPosCorrect,nPosCount))
-        print("Neutral " + self.percentage(nNeutCorrect,nNeutCount))
+        print("Neutral  " + self.percentage(nNeutCorrect,nNeutCount))
         print("Negative " + self.percentage(nNegCorrect,nNegCount))
         return(stopPos-startPos + stopNeut-startNeut + stopNeg-startNeg)
 
@@ -87,7 +87,7 @@ class TxtBlob:
 
 # run the analysis couple of time to get the average time
 totalTime = 0.0
-nRuns = 5
+nRuns = 1
 for i in range(nRuns):
     print("\nRun #{:}".format(i+1))
     totalTime += TxtBlob().TextblobAnalysis()
