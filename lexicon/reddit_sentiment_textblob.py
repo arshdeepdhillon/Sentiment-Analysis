@@ -34,7 +34,7 @@ class TxtBlob:
         nPosCorrect = 0
         nPosCount = 0
         with open(self.comments_parsed_path, "r") as f:
-
+        # with open("positive.txt", "r") as f:
             startPos = timeit.default_timer()
             for line in f:
                 analysis = TextBlob(line)
@@ -49,7 +49,7 @@ class TxtBlob:
         nNeutCorrect = 0
         nNeutCount = 0
         with open(self.comments_parsed_path, "r") as f:
-
+        # with open("positive.txt", "r") as f:
             startNeut = timeit.default_timer()
             for line in f:
                 analysis = TextBlob(line)
