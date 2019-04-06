@@ -10,14 +10,10 @@
 #             labels = f.read().split("\n")
 #             labels = labels[:-1]
 
-from timeit import default_timer as timer
-
 labels = []
 reviews = []
 #Now trying with Chandlers data
 with open("imdb_positive.txt") as f:
-
-startProcessing = timer()
     reviews = f.read().split("\n")
 for review in reviews:
     labels.append("positive")
@@ -40,28 +36,19 @@ reviews_tokens = [review.split() for review in reviews]
 from sklearn.preprocessing import MultiLabelBinarizer
 onehot_enc = MultiLabelBinarizer()
 onehot_enc.fit(reviews_tokens)
-stopProcessing = timer()
-
-print("Preprocessing time: ", stopProcessing - startProcessing)
 
 #Split data for training and testing
 from sklearn.model_selection import train_test_split
-
 X_train, X_test, y_train, y_test = train_test_split(reviews_tokens, labels, test_size=0.25, random_state=None)
 
 #Get ML algorithm to train
 from sklearn.naive_bayes import BernoulliNB
-startTraining = timer()
+
 bnbc = BernoulliNB(binarize=None)
 bnbc.fit(onehot_enc.transform(X_train), y_train)
-stopTraining = timer()
 
-print("Training Time: ", stopTraining-startTraining)
 #Get score
-startTesting = timer()
 score = bnbc.score(onehot_enc.transform(X_test), y_test)
-stopTesting = timer()
-print("Testing Time: ", stopTesting-startTesting)
 print(score)
 
 ####################  Evaluate the Classifier  ####################
