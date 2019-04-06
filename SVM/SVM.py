@@ -91,3 +91,9 @@ from sklearn.metrics import classification_report
 predicted = lsvm.predict(onehot_enc.transform(X_test))
 report = classification_report(y_test, predicted)
 print(report)
+
+# if you want only the f-score, then uncomment the following 2 lines.
+"""
+from sklearn.metrics import f1_score
+print("F-score is ", '{0:.3g}'.format(f1_score(y_test, predicted, average='weighted')*100) + "%")
+"""

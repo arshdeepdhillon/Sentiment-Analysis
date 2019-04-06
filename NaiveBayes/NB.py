@@ -50,3 +50,17 @@ bnbc.fit(onehot_enc.transform(X_train), y_train)
 #Get score
 score = bnbc.score(onehot_enc.transform(X_test), y_test)
 print(score)
+
+####################  Evaluate the Classifier  ####################
+print("\n\n")
+
+from sklearn.metrics import classification_report
+predicted = bnbc.predict(onehot_enc.transform(X_test))
+report = classification_report(y_test, predicted)
+print(report)
+
+# if you want only the f-score, then uncomment the following 2 lines.
+"""
+from sklearn.metrics import f1_score
+print("F-score is ", '{0:.3g}'.format(f1_score(y_test, predicted, average='weighted')*100) + "%")
+"""
