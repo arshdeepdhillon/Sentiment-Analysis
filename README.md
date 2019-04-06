@@ -5,9 +5,11 @@
 pip install textblob
 ```
 ```python
-pip install praw
+pip install vaderSentiment
 ```
-
+```python
+pip install praw
+``` 
 ```python
 python -m pip install [package]
 ```
