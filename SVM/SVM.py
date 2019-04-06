@@ -18,6 +18,8 @@ import csv
 # labels = labels[:-1]
 
 # reviews_tokens = [review.split() for review in reviews]
+
+#new way of processings the CSV file. Should work but the file is too large so it fails later on
 lines = 0
 reviews = []
 labels = []
@@ -43,8 +45,10 @@ onehot_enc.fit(reviews_tokens)
 
 #next splits into training and test.
 from sklearn.model_selection import train_test_split
+#this was my attempt to make the data set smaller.
 reviews_tokens = reviews_tokens[7500:-87500]
 labels = labels[7500:-87500]
+#This is where it fails based on all the data being negative or too large i believe. 
 X_train, X_test, y_train, y_test = train_test_split(reviews_tokens, labels, test_size=0.25, random_state=None)
 
 #trains
