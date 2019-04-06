@@ -39,7 +39,7 @@ class Vader:
             for line in f:
                 analysis = analyzer.polarity_scores(line)
                 self.nPosCount += 1
-                if analysis['compound'] >= compoundScore:
+                if analysis['compound'] > compoundScore:
 
                     if analysis['compound'] > 0:
                         self.nPosCorrect += 1
@@ -52,7 +52,7 @@ class Vader:
             for line in f:
                 analysis = analyzer.polarity_scores(line)
                 self.nNegCount += 1
-                if analysis['compound'] < compoundScore:
+                if analysis['compound'] <= compoundScore:
 
                     if analysis['compound'] <= 0:
                         self.nNegCorrect += 1
