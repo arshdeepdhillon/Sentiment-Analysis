@@ -9,11 +9,12 @@
 #         with open("labels.txt") as f:
 #             labels = f.read().split("\n")
 #             labels = labels[:-1]
+import timeit
 
 labels = []
 reviews = []
 #Now trying with Chandlers data
-with open("imdb_positive.txt") as f:
+with open("positive.txt") as f:
     reviews = f.read().split("\n")
 for review in reviews:
     labels.append("positive")
@@ -21,7 +22,7 @@ f.close();
 labels = labels[:-1]
 reviews = reviews[:-1]
 
-with open("imdb_negative.txt") as f:
+with open("negative.txt") as f:
     reviews2 = f.read().split("\n")
 for review2 in reviews2:
     reviews.append(review2)
@@ -44,11 +45,22 @@ X_train, X_test, y_train, y_test = train_test_split(reviews_tokens, labels, test
 #Get ML algorithm to train
 from sklearn.naive_bayes import BernoulliNB
 
+startTrain = timeit.default_timer()
+
 bnbc = BernoulliNB(binarize=None)
 bnbc.fit(onehot_enc.transform(X_train), y_train)
 
+endTrain = timeit.default_timer()
+
+startTest = timeit.default_timer()
 #Get score
 score = bnbc.score(onehot_enc.transform(X_test), y_test)
+endTest = timeit.default_timer()
+
+print("Training Time: ", end="")
+print(endTrain - startTrain)
+print("Time on test: ", end="")
+print(endTest - startTest)
 print(score)
 
 ####################  Evaluate the Classifier  ####################
