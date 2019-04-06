@@ -22,7 +22,6 @@ class Vader:
         self.nNegCorrect = 0
         self.nNegCount = 0
 
-
     def getRedditData(self):
         rd = RDT.Extract()
         rd.getComments()
@@ -41,7 +40,7 @@ class Vader:
                 analysis = analyzer.polarity_scores(line)
                 self.nPosCount += 1
                 if analysis['compound'] >= compoundScore:
-                    
+
                     if analysis['compound'] > 0:
                         self.nPosCorrect += 1
             stopP = timeit.default_timer()
@@ -54,7 +53,7 @@ class Vader:
                 analysis = analyzer.polarity_scores(line)
                 self.nNegCount += 1
                 if analysis['compound'] <= -compoundScore:
-                    
+
                     if analysis['compound'] <= 0:
                         self.nNegCorrect += 1
             stopN = timeit.default_timer()
@@ -63,6 +62,8 @@ class Vader:
         print("\nFinished in {:0.4f} sec".format(stopP-startP + stopN-startN))
         print("Positive " + self.percentage(self.nNegCorrect,self.nNegCount))
         print("Negative " + self.percentage(self.nPosCorrect,self.nPosCount))
+        print("F-score is ", '{0:.3g}'.format(self.evaluteModel(self.nPosCorrect,self.nPosCount,self.nNegCorrect,self.nNegCount)))
+
         return(stopP-startP + stopN-startN)
         # uncomment the below line to view the result using pie chart
         # self.plotData()
@@ -85,6 +86,37 @@ class Vader:
         strg = str("Sentiment of {} positives and {} negatives").format(self.nPosCount,self.nNegCount)
         plt.title(strg)
         plt.show()
+
+    def evaluteModel(self,nPosCorrect,nPosCount,nNegCorrect,nNegCount):
+        """
+        Purpose:
+            Calculates the f-score, the closer it is to 1 the better.
+            This method can be extented to further calcualted other measures.
+
+        Note:
+            tp = True Positive  - actual and predicted values are same
+            fn = False Negative - actual was positive but we predicted negative
+            tn = True Negative  - actual and predicted values are same
+            fp = False Positive - actual was negative but we predicted positive
+
+        Returns:
+            f-score: float
+        """
+
+        tp = nPosCorrect
+        fn = nPosCount - nPosCorrect
+        tn = nNegCorrect
+        fp = nNegCount - nNegCorrect
+
+        """
+        print("tp: ",nPosCount,"   ","fn: ", fn)
+        print("fp: ", fp,"   ", "tn: ",tn)
+        """
+
+        precision = tp/(float(tp+fp))
+        recall = tp/(float(tp+fn))
+        result = 2 * precision * (recall/(precision + recall))
+        return(result)
 
 
 

@@ -94,6 +94,6 @@ print(report)
 # if you want only the f-score, then uncomment the following 2 lines.
 """
 from sklearn.metrics import f1_score
-print("F-score is ", '{0:.3g}'.format(f1_score(y_test, predicted, average='weighted')*100) + "%")
+print("F-score is ", '{0:.3g}'.format(f1_score(y_test, predicted, average='weighted')))
 """
 print("\n####################            Done           ####################\n\n")

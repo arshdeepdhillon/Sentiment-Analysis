@@ -10,8 +10,8 @@ class Extract:
     def __init__(self):
 
         # raw reddit data is stored in this folder
-        self.raw_path = "../raw_data/"
-
+        self.raw_path = "../raw_data2/"
+        print("\n\n\n#####################################\n WARNING: raw_path is set to '" +self.raw_path +"'\n#####################################\n\n\n")
         # uncomment the raw_path variable and comment the raw_path variable to run the test files
         # self.raw_path = "__test__Raw Data/"
 

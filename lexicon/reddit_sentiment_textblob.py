@@ -40,6 +40,7 @@ class TxtBlob:
             for line in f:
                 analysis = TextBlob(line)
                 nPosCount += 1
+
                 if analysis.sentiment.polarity > compoundScore:
                     if analysis.sentiment.polarity > 0:
                         nPosCorrect += 1
@@ -62,11 +63,44 @@ class TxtBlob:
         print("\nFinished in {:0.4f} sec".format(stopPos-startPos + stopNeg-startNeg))
         print("Positive " + self.percentage(nPosCorrect,nPosCount))
         print("Negative " + self.percentage(nNegCorrect,nNegCount))
+        print("F-score is ", '{0:.3g}'.format(self.evaluteModel(nPosCorrect,nPosCount,nNegCorrect,nNegCount)))
+
         return((stopPos-startPos) + (stopNeg-startNeg))
 
     def percentage(self,nCorrect, nCounted):
         return ("Accuracy is {:0.4f}% via {} samples".format(nCorrect/nCounted*100.0, nCounted))
 
+
+    def evaluteModel(self,nPosCorrect,nPosCount,nNegCorrect,nNegCount):
+        """
+        Purpose:
+            Calculates the f-score, the closer it is to 1 the better.
+            This method can be extented to further calcualted other measures.
+
+        Note:
+            tp = True Positive  - actual and predicted values are same
+            fn = False Negative - actual was positive but we predicted negative
+            tn = True Negative  - actual and predicted values are same
+            fp = False Positive - actual was negative but we predicted positive
+
+        Returns:
+            f-score: float
+        """
+
+        tp = nPosCorrect
+        fn = nPosCount - nPosCorrect
+        tn = nNegCorrect
+        fp = nNegCount - nNegCorrect
+
+        """
+        print("tp: ",nPosCount,"   ","fn: ", fn)
+        print("fp: ", fp,"   ", "tn: ",tn)
+        """
+
+        precision = tp/(float(tp+fp))
+        recall = tp/(float(tp+fn))
+        result = 2 * precision * (recall/(precision + recall))
+        return(result)
 
 
 
