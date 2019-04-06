@@ -82,3 +82,12 @@ lsvm.fit(onehot_enc.transform(X_train), y_train)
 #check training score
 score = lsvm.score(onehot_enc.transform(X_test), y_test)
 print(score)
+
+
+####################  Evaluate the Classifier  ####################
+print("\n\n")
+
+from sklearn.metrics import classification_report
+predicted = lsvm.predict(onehot_enc.transform(X_test))
+report = classification_report(y_test, predicted)
+print(report)
