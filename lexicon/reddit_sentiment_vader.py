@@ -29,7 +29,7 @@ class Vader:
     def VaderAnalysis(self):
         self.getRedditData()
         analyzer = SentimentIntensityAnalyzer()
-        compoundScore = 0.05 # accuracy is good when threshold is close to 0.09
+        compoundScore = 0.00 # accuracy is good when threshold is close to 0.09
 
 
         # check for positive text
@@ -39,7 +39,7 @@ class Vader:
             for line in f:
                 analysis = analyzer.polarity_scores(line)
                 self.nPosCount += 1
-                if analysis['compound'] >= compoundScore:
+                if analysis['compound'] > compoundScore:
 
                     if analysis['compound'] > 0:
                         self.nPosCorrect += 1
@@ -52,7 +52,7 @@ class Vader:
             for line in f:
                 analysis = analyzer.polarity_scores(line)
                 self.nNegCount += 1
-                if analysis['compound'] <= -compoundScore:
+                if analysis['compound'] <= compoundScore:
 
                     if analysis['compound'] <= 0:
                         self.nNegCorrect += 1
