@@ -33,7 +33,7 @@ class Vader:
         compoundScore = 0.05 # accuracy is good when threshold is close to 0.09
 
 
-        # check for positive text
+        ####################### check for positive text ########################
         with open(self.comments_parsed_path, "r") as f:
         # with open("positive.txt", "r") as f:
             startP = timeit.default_timer()
@@ -45,10 +45,12 @@ class Vader:
                         self.nPosCorrect += 1
             stopP = timeit.default_timer()
 
-        # check for neutral text
+
+        ####################### check for neutral text #########################
         nNeutCorrect = 0
         nNeutCount = 0
         with open(self.comments_parsed_path, "r") as f:
+        # with open("positive.txt", "r") as f:
             startNeut = timeit.default_timer()
             for line in f:
                 analysis = analyzer.polarity_scores(line)
@@ -58,9 +60,20 @@ class Vader:
                         nNeutCorrect += 1
             stopNeut = timeit.default_timer()
 
+        # uncomment the below code if you want to run positive & negative text files
+        """
+        with open("negative.txt", "r") as f:
+            startNeut = timeit.default_timer()
+            for line in f:
+                analysis = analyzer.polarity_scores(line)
+                if analysis['compound'] > -compoundScore and analysis['compound'] < compoundScore:
+                    nNeutCount += 1
+                    if analysis['compound'] == 0:
+                        nNeutCorrect += 1
+        """
 
 
-        # check for neutral text
+        ####################### check for negative text #########################
         with open(self.comments_parsed_path, "r") as f:
         # with open("negative.txt", "r") as f:
             startN = timeit.default_timer()
