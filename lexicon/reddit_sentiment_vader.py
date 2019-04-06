@@ -27,14 +27,14 @@ class Vader:
         rd.getComments()
 
     def VaderAnalysis(self):
-        self.getRedditData()
+       # self.getRedditData()
         analyzer = SentimentIntensityAnalyzer()
-        compoundScore = 0.05 # accuracy is good when threshold is close to 0.09
+        compoundScore = 0.00 # accuracy is good when threshold is close to 0.09
 
 
         # check for positive text
         #with open(self.comments_parsed_path, "r") as f:
-        with open("positive_movie_reviews.txt", "r") as f:
+        with open("yelp_positive.txt", "r") as f:
             startP = timeit.default_timer()
             for line in f:
                 analysis = analyzer.polarity_scores(line)
@@ -47,12 +47,12 @@ class Vader:
 
         # check for neutral text
         #with open(self.comments_parsed_path, "r") as f:
-        with open("negative_movie_reviews.txt", "r") as f:
+        with open("yelp_negative.txt", "r") as f:
             startN = timeit.default_timer()
             for line in f:
                 analysis = analyzer.polarity_scores(line)
                 self.nNegCount += 1
-                if analysis['compound'] <= -compoundScore:
+                if analysis['compound'] < compoundScore:
 
                     if analysis['compound'] <= 0:
                         self.nNegCorrect += 1
