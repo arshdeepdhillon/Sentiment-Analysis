@@ -8,6 +8,11 @@ pip install textblob
 pip install praw
 ```
 
+```python
+python -m pip install [package]
+```
+ 
+
 
 
 ### [Reddit Sample Data](http://files.pushshift.io/reddit/comments/)
