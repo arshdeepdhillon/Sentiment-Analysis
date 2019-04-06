@@ -1,0 +1,83 @@
+##################################################################
+
+Algorithm used:
+  Textblob
+
+File Used:
+  positive_movie_reviews.txt and negative_movie_reviews.txt
+
+Result:
+  Finished in 4.7226 sec
+  Positive Accuracy is 93.9600% via 2500 samples
+  Negative Accuracy is 42.4000% via 2500 samples
+  F-score is  0.747
+
+##################################################################
+
+Algorithm used:
+  Vader
+
+File Used:
+  positive_movie_reviews.txt and negative_movie_reviews.txt
+
+Result:
+  Finished in 28.5793 sec
+  Positive Accuracy is 52.0400% via 2500 samples
+  Negative Accuracy is 83.7200% via 2500 samples
+  F-score is  0.723
+
+##################################################################
+
+Algorithm used:
+  NB
+
+File Used:
+  positive_movie_reviews.txt and negative_movie_reviews.txt
+
+Training Time:
+  0.7770214
+
+Time on test:
+  0.2617741
+
+Accuracy:
+  0.8584
+
+Evaluate the Classifier:
+              precision    recall  f1-score   support
+
+    negative       0.83      0.90      0.86       624
+    positive       0.89      0.82      0.85       626
+
+   micro avg       0.86      0.86      0.86      1250
+   macro avg       0.86      0.86      0.86      1250
+weighted avg       0.86      0.86      0.86      1250
+
+##################################################################
+
+Algorithm used:
+  SVM
+
+File Used:
+  positive_movie_reviews.txt and negative_movie_reviews.txt
+
+Training Time:
+  0.9962713
+
+Time on test:
+  0.2677007
+
+Accuracy:
+  0.8688
+
+Evaluate the Classifier:
+              precision    recall  f1-score   support
+
+    negative       0.86      0.88      0.87       612
+    positive       0.88      0.86      0.87       638
+
+   micro avg       0.87      0.87      0.87      1250
+   macro avg       0.87      0.87      0.87      1250
+weighted avg       0.87      0.87      0.87      1250
+
+##################################################################
