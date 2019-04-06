@@ -34,64 +34,35 @@ class TxtBlob:
         ####################### check for positive text ########################
         nPosCorrect = 0
         nPosCount = 0
-        with open(self.comments_parsed_path, "r") as f:
-        # with open("positive.txt", "r") as f:
+        #with open(self.comments_parsed_path, "r") as f:
+        with open("positive.txt", "r") as f:
             startPos = timeit.default_timer()
             for line in f:
                 analysis = TextBlob(line)
+                nPosCount += 1
                 if analysis.sentiment.polarity >= compoundScore:
-                    nPosCount += 1
                     if analysis.sentiment.polarity > 0:
                         nPosCorrect += 1
             stopPos = timeit.default_timer()
 
-
-        ####################### check for neutral text #########################
-        nNeutCorrect = 0
-        nNeutCount = 0
-        with open(self.comments_parsed_path, "r") as f:
-        # with open("positive.txt", "r") as f:
-            startNeut = timeit.default_timer()
-            for line in f:
-                analysis = TextBlob(line)
-                if analysis.sentiment.polarity > -compoundScore and analysis.sentiment.polarity < compoundScore:
-                    nNeutCount += 1
-                    if analysis.sentiment.polarity == 0:
-                        nNeutCorrect += 1
-            stopNeut = timeit.default_timer()
-
-        # uncomment the below code if you want to run positive & negative text files
-        """
-        with open("negative.txt", "r") as f:
-            startNeut = timeit.default_timer()
-            for line in f:
-                analysis = TextBlob(line)
-                if analysis.sentiment.polarity > -compoundScore and analysis.sentiment.polarity < compoundScore:
-                    nNeutCount += 1
-                    if analysis.sentiment.polarity == 0:
-                        nNeutCorrect += 1
-            stopNeut = timeit.default_timer()
-        """
-
         ####################### check for negative text #########################
         nNegCorrect = 0
         nNegCount = 0
-        with open(self.comments_parsed_path, "r") as f:
-        # with open("negative.txt", "r") as f:
+        #with open(self.comments_parsed_path, "r") as f:
+        with open("negative.txt", "r") as f:
             startNeg = timeit.default_timer()
             for line in f:
                 analysis = TextBlob(line)
+                nNegCount += 1
                 if analysis.sentiment.polarity <= -compoundScore:
-                    nNegCount += 1
                     if analysis.sentiment.polarity <= 0:
                         nNegCorrect += 1
             stopNeg = timeit.default_timer()
 
-        print("\nFinished in {:0.4f} sec".format(stopPos-startPos + stopNeut-startNeut + stopNeg-startNeg))
+        print("\nFinished in {:0.4f} sec".format(stopPos-startPos + stopNeg-startNeg))
         print("Positive " + self.percentage(nPosCorrect,nPosCount))
-        print("Neutral  " + self.percentage(nNeutCorrect,nNeutCount))
         print("Negative " + self.percentage(nNegCorrect,nNegCount))
-        return(stopPos-startPos + stopNeut-startNeut + stopNeg-startNeg)
+        return((stopPos-startPos) + (stopNeg-startNeg))
 
     def percentage(self,nCorrect, nCounted):
         return ("Accuracy is {:0.4f}% via {} samples".format(nCorrect/nCounted*100.0, nCounted))
