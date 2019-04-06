@@ -3,7 +3,7 @@ import zipfile
 from sklearn.preprocessing import MultiLabelBinarizer
 # Using code from sklearn to help imeplement our SVM approach
 #https://medium.com/nlpython/sentiment-analysis-analysis-part-2-support-vector-machines-31f78baeee09
-
+from timeit import default_timer as timer
 import csv
 
 
@@ -37,7 +37,7 @@ labels = []
 #
 # f.close()
 
-
+startProcessing = timer()
 #Now trying with Chandlers data
 with open("amazon_positive.txt") as f:
     reviews = f.read().split("\n")
@@ -74,13 +74,24 @@ from sklearn.model_selection import train_test_split
 #This is where it fails based on all the data being negative or too large i believe.
 X_train, X_test, y_train, y_test = train_test_split(reviews_tokens, labels, test_size=0.25, random_state=None)
 
+stopProcessing = timer()
+
+print("Preprocessing time: ", stopProcessing - startProcessing)
+
 #trains
 from sklearn.svm import LinearSVC
+startTraining = timer()
 lsvm = LinearSVC()
 lsvm.fit(onehot_enc.transform(X_train), y_train)
+stopTraining = timer()
+
+print("Training Time: ", stopTraining-startTraining)
 
 #check training score
+startTesting = timer()
 score = lsvm.score(onehot_enc.transform(X_test), y_test)
+stopTesting = timer()
+print("Testing Time: ", stopTesting-startTesting)
 print(score)
 
 
