@@ -39,7 +39,7 @@ labels = []
 
 
 #Now trying with Chandlers data
-with open("imdb_positive.txt") as f:
+with open("amazon_positive.txt") as f:
     reviews = f.read().split("\n")
 for review in reviews:
     labels.append("positive")
@@ -47,7 +47,7 @@ f.close();
 labels = labels[:-1]
 reviews = reviews[:-1]
 
-with open("imdb_negative.txt") as f:
+with open("amazon_negative.txt") as f:
     reviews2 = f.read().split("\n")
 for review2 in reviews2:
     reviews.append(review2)
