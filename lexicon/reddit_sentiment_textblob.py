@@ -16,6 +16,7 @@ class TxtBlob:
         # extracted and aggregated into one file under comments_parsed_path folder
         self.comments_parsed_path = "comments_extracted/" + self.comments_parsed_file_name
 
+
     def getRedditData(self):
         rd = RDT.Extract()
         rd.getComments()
@@ -30,7 +31,7 @@ class TxtBlob:
         # compoundScore (which is set to 0.05).
         compoundScore = 0.05
 
-        # check for positive text
+        ####################### check for positive text ########################
         nPosCorrect = 0
         nPosCount = 0
         with open(self.comments_parsed_path, "r") as f:
@@ -45,7 +46,7 @@ class TxtBlob:
             stopPos = timeit.default_timer()
 
 
-        # check for neutral text
+        ####################### check for neutral text #########################
         nNeutCorrect = 0
         nNeutCount = 0
         with open(self.comments_parsed_path, "r") as f:
@@ -59,12 +60,24 @@ class TxtBlob:
                         nNeutCorrect += 1
             stopNeut = timeit.default_timer()
 
+        # uncomment the below code if you want to run positive & negative text files
+        """
+        with open("negative.txt", "r") as f:
+            startNeut = timeit.default_timer()
+            for line in f:
+                analysis = TextBlob(line)
+                if analysis.sentiment.polarity > -compoundScore and analysis.sentiment.polarity < compoundScore:
+                    nNeutCount += 1
+                    if analysis.sentiment.polarity == 0:
+                        nNeutCorrect += 1
+            stopNeut = timeit.default_timer()
+        """
 
-        # check for negative text
+        ####################### check for negative text #########################
         nNegCorrect = 0
         nNegCount = 0
         with open(self.comments_parsed_path, "r") as f:
-
+        # with open("negative.txt", "r") as f:
             startNeg = timeit.default_timer()
             for line in f:
                 analysis = TextBlob(line)
@@ -82,6 +95,7 @@ class TxtBlob:
 
     def percentage(self,nCorrect, nCounted):
         return ("Accuracy is {:0.4f}% via {} samples".format(nCorrect/nCounted*100.0, nCounted))
+
 
 
 
