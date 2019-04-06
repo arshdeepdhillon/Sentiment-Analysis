@@ -85,8 +85,7 @@ print(score)
 
 
 ####################  Evaluate the Classifier  ####################
-print("\n\n")
-
+print("\n\n####################  Evaluate the Classifier  ####################\n")
 from sklearn.metrics import classification_report
 predicted = lsvm.predict(onehot_enc.transform(X_test))
 report = classification_report(y_test, predicted)
@@ -97,3 +96,4 @@ print(report)
 from sklearn.metrics import f1_score
 print("F-score is ", '{0:.3g}'.format(f1_score(y_test, predicted, average='weighted')*100) + "%")
 """
+print("\n####################            Done           ####################\n\n")
