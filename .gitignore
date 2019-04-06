@@ -3,3 +3,5 @@ __pycache__/
 *$py.class
 SVM/reviews.txt
 NaiveBayes/reviews.txt
+SVM/imdb_master.csv
+lexicon/comments_extracted/output.txt
