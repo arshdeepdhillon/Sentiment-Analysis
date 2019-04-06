@@ -112,38 +112,38 @@ class Extract:
 
                         # for each comment in the array, write its body to the file
                         for comment in values:
+                            if comment["body"] != "[deleted]":
+                                s = comment["body"].strip().replace("\n", " ")
+                                # s = s.replace("\r", " ")
+                                # filter data
+                                s = s.lower()
 
-                            s = comment["body"].strip().replace("\n", " ")
-                            # s = s.replace("\r", " ")
-                            # filter data
-                            s = s.lower()
+                                # remove all the non legal chars (remove all the punctuations)
+                                # s = re.sub(r'\d+', '',s)
+                                # s = regex.sub('',s)
 
-                            # remove all the non legal chars (remove all the punctuations)
-                            # s = re.sub(r'\d+', '',s)
-                            # s = regex.sub('',s)
+                                # remove all characters that are not english letters and space
+                                # and replace them with an empty string
+                                s = re.sub('[^a-zA-Z! ]+','',s)
 
-                            # remove all characters that are not english letters and space
-                            # and replace them with an empty string
-                            s = re.sub('[^a-zA-Z! ]+','',s)
+                                #remove stop words
+                                stop_words = set(stopwords.words('english'))
+                                words = word_tokenize(s)
+                                """
+                                filtered_sentence = []
+                                for w in words:
+                                    if w not in stop_words:
+                                        filtered_sentence.append(w)
+                                """
 
-                            #remove stop words
-                            stop_words = set(stopwords.words('english'))
-                            words = word_tokenize(s)
-                            """
-                            filtered_sentence = []
-                            for w in words:
-                                if w not in stop_words:
-                                    filtered_sentence.append(w)
-                            """
+                                filtered_sentence = [w for w in words if w not in stop_words]
+                                filtered_sentence = " ".join(filtered_sentence)
+                                # print(filtered_sentence)
+                                printable = set(string.printable)
+                                for chr in filter(lambda x: x in printable, filtered_sentence):
+                                    f.write(chr)
 
-                            filtered_sentence = [w for w in words if w not in stop_words]
-                            filtered_sentence = " ".join(filtered_sentence)
-                            # print(filtered_sentence)
-                            printable = set(string.printable)
-                            for chr in filter(lambda x: x in printable, filtered_sentence):
-                                f.write(chr)
-
-                            f.write("\n")
+                                f.write("\n")
 
         except Exception as e:
             print(e)

@@ -1,5 +1,6 @@
 from sklearn import svm
 import zipfile
+import timeit
 from sklearn.preprocessing import MultiLabelBinarizer
 # Using code from sklearn to help imeplement our SVM approach
 #https://medium.com/nlpython/sentiment-analysis-analysis-part-2-support-vector-machines-31f78baeee09
@@ -76,11 +77,20 @@ X_train, X_test, y_train, y_test = train_test_split(reviews_tokens, labels, test
 
 #trains
 from sklearn.svm import LinearSVC
+startTrain = timeit.default_timer()
 lsvm = LinearSVC()
 lsvm.fit(onehot_enc.transform(X_train), y_train)
+endTrain = timeit.default_timer()
 
 #check training score
+startTest = timeit.default_timer()
 score = lsvm.score(onehot_enc.transform(X_test), y_test)
+endTest = timeit.default_timer()
+
+print("Training Time: ", end="")
+print(endTrain - startTrain)
+print("Time on test: ", end="")
+print(endTest - startTest)
 print(score)
 
 
