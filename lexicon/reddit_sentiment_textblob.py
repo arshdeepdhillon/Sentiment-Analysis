@@ -29,7 +29,7 @@ class TxtBlob:
         # since textblob doesn't explicitly give a positive, neutral and negative value
         # I have set a compoundScore var that is similar ad vader's
         # compoundScore (which is set to 0.05).
-        compoundScore = 0.05
+        compoundScore = 0.00
 
         ####################### check for positive text ########################
         nPosCorrect = 0
@@ -40,7 +40,7 @@ class TxtBlob:
             for line in f:
                 analysis = TextBlob(line)
                 nPosCount += 1
-                if analysis.sentiment.polarity >= compoundScore:
+                if analysis.sentiment.polarity > compoundScore:
                     if analysis.sentiment.polarity > 0:
                         nPosCorrect += 1
             stopPos = timeit.default_timer()
@@ -54,7 +54,7 @@ class TxtBlob:
             for line in f:
                 analysis = TextBlob(line)
                 nNegCount += 1
-                if analysis.sentiment.polarity <= -compoundScore:
+                if analysis.sentiment.polarity <= compoundScore:
                     if analysis.sentiment.polarity <= 0:
                         nNegCorrect += 1
             stopNeg = timeit.default_timer()
