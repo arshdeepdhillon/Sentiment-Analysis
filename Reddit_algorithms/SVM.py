@@ -89,11 +89,13 @@ from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(reviews_tokens, labels, test_size=0.58, random_state=None, shuffle = False)
 
 #trains
-from sklearn.svm import LinearSVC
+from sklearn.svm import LinearSVC, SVC
 
 print("Training the model...", end = '')
 startTrain = timeit.default_timer()
 lsvm = LinearSVC(dual = False)
+# lsvm = SVC(random_state=0, C=100, gamma = 0.1, kernel='linear')
+
 lsvm.fit(onehot_enc.transform(X_train), y_train)
 endTrain = timeit.default_timer()
 print("Done.")
