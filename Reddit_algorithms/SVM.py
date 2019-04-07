@@ -38,7 +38,7 @@ labels = []
 #
 # f.close()
 
-
+print("Reading positive.txt...", end = '')
 #Now trying with Chandlers data
 with open("positive.txt") as f:
     reviews = f.read().split("\n")
@@ -47,14 +47,19 @@ for review in reviews:
 f.close();
 labels = labels[:-1]
 reviews = reviews[:-1]
+print("Done.")
 
+
+print("Reading negative.txt...", end = '')
 with open("negative.txt") as f:
     reviews2 = f.read().split("\n")
 for review2 in reviews2:
     reviews.append(review2)
     labels.append("negative")
 f.close()
+print("Done.")
 
+print("Reading RC_2006-03.txt...", end = '')
 with open("RC_2006-03.txt") as f:
 	reviews3 = f.read().split("\n")
 for review3 in reviews3:
@@ -63,7 +68,7 @@ for review3 in reviews3:
 
 labels = labels[:-1]
 reviews = reviews[:-1]
-
+print("Done.")
 
 # reviews = reviews.append(reviews2)
 # print(len(reviews))
@@ -85,15 +90,21 @@ X_train, X_test, y_train, y_test = train_test_split(reviews_tokens, labels, test
 
 #trains
 from sklearn.svm import LinearSVC
+
+print("Training the model...", end = '')
 startTrain = timeit.default_timer()
 lsvm = LinearSVC(dual = False)
 lsvm.fit(onehot_enc.transform(X_train), y_train)
 endTrain = timeit.default_timer()
+print("Done.")
+
 
 #check training score
+print("Checking the training score...", end = '')
 startTest = timeit.default_timer()
 score = lsvm.score(onehot_enc.transform(X_test), y_test)
 endTest = timeit.default_timer()
+print("Done.")
 
 print("Training Time: ", end="")
 print(endTrain - startTrain)
