@@ -78,7 +78,7 @@ from sklearn.model_selection import train_test_split
 # reviews_tokens = reviews_tokens[7500:-87500]
 # labels = labels[7500:-87500]
 #This is where it fails based on all the data being negative or too large i believe.
-X_train, X_test, y_train, y_test = train_test_split(reviews_tokens, labels, test_size=0.64, random_state=None, shuffle = False)
+X_train, X_test, y_train, y_test = train_test_split(reviews_tokens, labels, test_size=0.58, random_state=None, shuffle = False)
 
 #trains
 from sklearn.svm import LinearSVC
