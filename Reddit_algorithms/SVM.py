@@ -54,13 +54,16 @@ for review2 in reviews2:
     reviews.append(review2)
     labels.append("negative")
 f.close()
+"""
 with open("RC_2006-03.txt") as f:
 	reviews3 = f.read().split("\n")
 for review3 in reviews3:
 	reviews.append(review3)
 	labels.append("positive")
+"""
 labels = labels[:-1]
 reviews = reviews[:-1]
+
 
 # reviews = reviews.append(reviews2)
 # print(len(reviews))
