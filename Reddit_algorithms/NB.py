@@ -46,7 +46,7 @@ onehot_enc.fit(reviews_tokens)
 
 #Split data for training and testing
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(reviews_tokens, labels, test_size=0.64, random_state=None)
+X_train, X_test, y_train, y_test = train_test_split(reviews_tokens, labels, test_size=0.58, random_state=None, shuffle=False)
 
 #Get ML algorithm to train
 from sklearn.naive_bayes import BernoulliNB
