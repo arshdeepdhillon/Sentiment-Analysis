@@ -1,9 +1,12 @@
 # Comparative Sentiment Analysis of Lexicon and Machine Learning
 
 ## Installation 
-```javascript
+```python
 pip install textblob
 pip install vaderSentiment
+```
+If the above command fails, try the following
+```python
 python -m pip install [package]
 ```
 
