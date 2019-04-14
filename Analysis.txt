@@ -1,0 +1,83 @@
+##################################################################
+
+Algorithm used:
+  Textblob
+
+File Used:
+  positive.txt and negative.txt
+
+Result:
+  Finished in 2.3453 sec
+  Positive Accuracy is 71.1311% via 5331 samples
+  Negative Accuracy is 55.8619% via 5331 samples
+  F-score is  0.661
+
+##################################################################
+
+Algorithm used:
+  Vader
+
+File Used:
+  positive.txt and negative.txt
+
+Result:
+  Finished in 29.7938 sec
+  Positive Accuracy is 52.0400% via 2500 samples
+  Negative Accuracy is 83.7200% via 2500 samples
+  F-score is  0.723
+
+##################################################################
+
+Algorithm used:
+  NB
+
+File Used:
+  positive.txt and negative.txt
+
+Training Time:
+  0.85
+
+Time on test:
+  0.32
+
+Accuracy:
+  0.77
+
+Evaluate the Classifier:
+              precision    recall  f1-score   support
+
+    negative       0.75      0.79      0.77      1312
+    positive       0.78      0.75      0.77      1354
+
+   micro avg       0.77      0.77      0.77      2666
+   macro avg       0.77      0.77      0.77      2666
+weighted avg       0.77      0.77      0.77      2666
+
+##################################################################
+
+Algorithm used:
+  SVM
+
+File Used:
+  positive.txt and negative.txt
+
+Training Time:
+  1.14
+
+Time on test:
+  0.27
+
+Accuracy:
+  0.74
+
+Evaluate the Classifier:
+                precision    recall  f1-score   support
+
+      negative       0.74      0.73      0.73      1313
+      positive       0.74      0.75      0.74      1353
+
+     micro avg       0.74      0.74      0.74      2666
+     macro avg       0.74      0.74      0.74      2666
+  weighted avg       0.74      0.74      0.74      2666
+
+##################################################################

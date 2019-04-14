@@ -22,75 +22,49 @@ class Vader:
         self.nNegCorrect = 0
         self.nNegCount = 0
 
-
     def getRedditData(self):
         rd = RDT.Extract()
         rd.getComments()
 
     def VaderAnalysis(self):
-        self.getRedditData()
+        #self.getRedditData()
         analyzer = SentimentIntensityAnalyzer()
-        compoundScore = 0.05 # accuracy is good when threshold is close to 0.09
+        compoundScore = 0.00 # accuracy is good when threshold is close to 0.09
 
 
-        ####################### check for positive text ########################
-        with open(self.comments_parsed_path, "r") as f:
-        # with open("positive.txt", "r") as f:
+        # check for positive text
+        #with open(self.comments_parsed_path, "r") as f:
+        with open("yelp_positive.txt", "r") as f:
             startP = timeit.default_timer()
             for line in f:
                 analysis = analyzer.polarity_scores(line)
-                if analysis['compound'] >= compoundScore:
-                    self.nPosCount += 1
+                self.nPosCount += 1
+                if analysis['compound'] > compoundScore:
+
                     if analysis['compound'] > 0:
                         self.nPosCorrect += 1
             stopP = timeit.default_timer()
 
-
-        ####################### check for neutral text #########################
-        nNeutCorrect = 0
-        nNeutCount = 0
-        with open(self.comments_parsed_path, "r") as f:
-        # with open("positive.txt", "r") as f:
-            startNeut = timeit.default_timer()
-            for line in f:
-                analysis = analyzer.polarity_scores(line)
-                if analysis['compound'] > -compoundScore and analysis['compound'] < compoundScore:
-                    nNeutCount += 1
-                    if analysis['compound'] == 0:
-                        nNeutCorrect += 1
-            stopNeut = timeit.default_timer()
-
-        # uncomment the below code if you want to run positive & negative text files
-        """
-        with open("negative.txt", "r") as f:
-            startNeut = timeit.default_timer()
-            for line in f:
-                analysis = analyzer.polarity_scores(line)
-                if analysis['compound'] > -compoundScore and analysis['compound'] < compoundScore:
-                    nNeutCount += 1
-                    if analysis['compound'] == 0:
-                        nNeutCorrect += 1
-        """
-
-
-        ####################### check for negative text #########################
-        with open(self.comments_parsed_path, "r") as f:
-        # with open("negative.txt", "r") as f:
+        # check for neutral text
+        #with open(self.comments_parsed_path, "r") as f:
+        with open("yelp_negative.txt", "r") as f:
             startN = timeit.default_timer()
             for line in f:
                 analysis = analyzer.polarity_scores(line)
-                if analysis['compound'] <= -compoundScore:
-                    self.nNegCount += 1
+                self.nNegCount += 1
+                if analysis['compound'] <= compoundScore:
+
                     if analysis['compound'] <= 0:
                         self.nNegCorrect += 1
             stopN = timeit.default_timer()
 
 
-        print("\nFinished in {:0.4f} sec".format(stopP-startP + stopP-startP + stopNeut-startNeut))
+        print("\nFinished in {:0.4f} sec".format(stopP-startP + stopN-startN))
         print("Positive " + self.percentage(self.nNegCorrect,self.nNegCount))
-        print("Neutral  " + self.percentage(nNeutCorrect, nNeutCount))
         print("Negative " + self.percentage(self.nPosCorrect,self.nPosCount))
-        return(stopP-startP + stopP-startP + stopNeut-startNeut)
+        print("F-score is ", '{0:.3g}'.format(self.evaluteModel(self.nPosCorrect,self.nPosCount,self.nNegCorrect,self.nNegCount)))
+
+        return(stopP-startP + stopN-startN)
         # uncomment the below line to view the result using pie chart
         # self.plotData()
 
@@ -112,6 +86,37 @@ class Vader:
         strg = str("Sentiment of {} positives and {} negatives").format(self.nPosCount,self.nNegCount)
         plt.title(strg)
         plt.show()
+
+    def evaluteModel(self,nPosCorrect,nPosCount,nNegCorrect,nNegCount):
+        """
+        Purpose:
+            Calculates the f-score, the closer it is to 1 the better.
+            This method can be extented to further calcualted other measures.
+
+        Note:
+            tp = True Positive  - actual and predicted values are same
+            fn = False Negative - actual was positive but we predicted negative
+            tn = True Negative  - actual and predicted values are same
+            fp = False Positive - actual was negative but we predicted positive
+
+        Returns:
+            f-score: float
+        """
+
+        tp = nPosCorrect
+        fn = nPosCount - nPosCorrect
+        tn = nNegCorrect
+        fp = nNegCount - nNegCorrect
+
+        """
+        print("tp: ",nPosCount,"   ","fn: ", fn)
+        print("fp: ", fp,"   ", "tn: ",tn)
+        """
+
+        precision = tp/(float(tp+fp))
+        recall = tp/(float(tp+fn))
+        result = 2 * precision * (recall/(precision + recall))
+        return(result)
 
 
 

@@ -10,10 +10,10 @@ class Extract:
     def __init__(self):
 
         # raw reddit data is stored in this folder
-        self.raw_path = "../raw_data/"
-
+        self.raw_path = "../reddit_raw_Data/"
+        print("\n\n\n#####################################\n WARNING: raw_path is set to '" +self.raw_path +"'\n#####################################\n\n\n")
         # uncomment the raw_path variable and comment the raw_path variable to run the test files
-        # self.raw_path = "__test__Raw Data/"
+        # self.raw_path = "__test__raw_data/"
 
 
         # once each raw data file is formatted into a json format, it is stored in json_formatted_path folder
@@ -112,38 +112,26 @@ class Extract:
 
                         # for each comment in the array, write its body to the file
                         for comment in values:
+                            if comment["body"] != "[deleted]":
+                                s = comment["body"].strip().replace("\n", " ")
+                                # filter data
+                                s = s.lower()
 
-                            s = comment["body"].strip().replace("\n", " ")
-                            # s = s.replace("\r", " ")
-                            # filter data
-                            s = s.lower()
+                                # remove all characters that are not english letters and space
+                                # and replace them with an empty string
+                                s = re.sub('[^a-zA-Z! ]+','',s)
 
-                            # remove all the non legal chars (remove all the punctuations)
-                            # s = re.sub(r'\d+', '',s)
-                            # s = regex.sub('',s)
+                                #remove stop words
+                                stop_words = set(stopwords.words('english'))
+                                words = word_tokenize(s)
 
-                            # remove all characters that are not english letters and space
-                            # and replace them with an empty string
-                            s = re.sub('[^a-zA-Z! ]+','',s)
-
-                            #remove stop words
-                            stop_words = set(stopwords.words('english'))
-                            words = word_tokenize(s)
-                            """
-                            filtered_sentence = []
-                            for w in words:
-                                if w not in stop_words:
-                                    filtered_sentence.append(w)
-                            """
-
-                            filtered_sentence = [w for w in words if w not in stop_words]
-                            filtered_sentence = " ".join(filtered_sentence)
-                            # print(filtered_sentence)
-                            printable = set(string.printable)
-                            for chr in filter(lambda x: x in printable, filtered_sentence):
-                                f.write(chr)
-
-                            f.write("\n")
+                                filtered_sentence = [w for w in words if w not in stop_words]
+                                filtered_sentence = " ".join(filtered_sentence)
+                                # print(filtered_sentence)
+                                printable = set(string.printable)
+                                for chr in filter(lambda x: x in printable, filtered_sentence):
+                                    f.write(chr)
+                                f.write("\n")
 
         except Exception as e:
             print(e)
