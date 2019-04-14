@@ -49,3 +49,9 @@ python -m pip install [package]
 * [Vader](https://github.com/cjhutto/vaderSentiment)
 * [TextBlob](https://textblob.readthedocs.io/en/dev/index.html#)
 * [Reddit Data](http://files.pushshift.io/reddit/comments/)
+
+
+
+## License
+
+See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).
