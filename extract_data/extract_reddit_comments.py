@@ -10,10 +10,10 @@ class Extract:
     def __init__(self):
 
         # raw reddit data is stored in this folder
-        self.raw_path = "../raw_data2/"
+        self.raw_path = "../reddit_raw_Data/"
         print("\n\n\n#####################################\n WARNING: raw_path is set to '" +self.raw_path +"'\n#####################################\n\n\n")
         # uncomment the raw_path variable and comment the raw_path variable to run the test files
-        # self.raw_path = "__test__Raw Data/"
+        # self.raw_path = "__test__raw_data/"
 
 
         # once each raw data file is formatted into a json format, it is stored in json_formatted_path folder
@@ -114,13 +114,8 @@ class Extract:
                         for comment in values:
                             if comment["body"] != "[deleted]":
                                 s = comment["body"].strip().replace("\n", " ")
-                                # s = s.replace("\r", " ")
                                 # filter data
                                 s = s.lower()
-
-                                # remove all the non legal chars (remove all the punctuations)
-                                # s = re.sub(r'\d+', '',s)
-                                # s = regex.sub('',s)
 
                                 # remove all characters that are not english letters and space
                                 # and replace them with an empty string
@@ -129,12 +124,6 @@ class Extract:
                                 #remove stop words
                                 stop_words = set(stopwords.words('english'))
                                 words = word_tokenize(s)
-                                """
-                                filtered_sentence = []
-                                for w in words:
-                                    if w not in stop_words:
-                                        filtered_sentence.append(w)
-                                """
 
                                 filtered_sentence = [w for w in words if w not in stop_words]
                                 filtered_sentence = " ".join(filtered_sentence)
@@ -142,7 +131,6 @@ class Extract:
                                 printable = set(string.printable)
                                 for chr in filter(lambda x: x in printable, filtered_sentence):
                                     f.write(chr)
-
                                 f.write("\n")
 
         except Exception as e:

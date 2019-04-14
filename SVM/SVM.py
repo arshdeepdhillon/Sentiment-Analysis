@@ -2,10 +2,10 @@ from sklearn import svm
 import zipfile
 import timeit
 from sklearn.preprocessing import MultiLabelBinarizer
+import csv
+
 # Using code from sklearn to help imeplement our SVM approach
 #https://medium.com/nlpython/sentiment-analysis-analysis-part-2-support-vector-machines-31f78baeee09
-
-import csv
 
 
 #First part unpacks the zip file and then breaks it down.
@@ -40,7 +40,7 @@ labels = []
 
 
 #Now trying with Chandlers data
-with open("positive.txt") as f:
+with open("data_sets/positive.txt") as f:
     reviews = f.read().split("\n")
 for review in reviews:
     labels.append("positive")
@@ -48,7 +48,7 @@ f.close();
 labels = labels[:-1]
 reviews = reviews[:-1]
 
-with open("negative.txt") as f:
+with open("data_sets/negative.txt") as f:
     reviews2 = f.read().split("\n")
 for review2 in reviews2:
     reviews.append(review2)
@@ -57,9 +57,6 @@ f.close()
 labels = labels[:-1]
 reviews = reviews[:-1]
 
-# reviews = reviews.append(reviews2)
-# print(len(reviews))
-print(len(labels))
 reviews_tokens = [review.split() for review in reviews]
 
 #now it coverts inputs to binary vectors
@@ -69,9 +66,6 @@ onehot_enc.fit(reviews_tokens)
 
 #next splits into training and test.
 from sklearn.model_selection import train_test_split
-#this was my attempt to make the data set smaller.
-# reviews_tokens = reviews_tokens[7500:-87500]
-# labels = labels[7500:-87500]
 #This is where it fails based on all the data being negative or too large i believe.
 X_train, X_test, y_train, y_test = train_test_split(reviews_tokens, labels, test_size=0.25, random_state=None)
 
@@ -91,7 +85,7 @@ print("Training Time: ", end="")
 print(endTrain - startTrain)
 print("Time on test: ", end="")
 print(endTest - startTest)
-print(score)
+print("Score: ",score)
 
 
 ####################  Evaluate the Classifier  ####################
@@ -101,7 +95,7 @@ predicted = lsvm.predict(onehot_enc.transform(X_test))
 report = classification_report(y_test, predicted)
 print(report)
 
-# if you want only the f-score, then uncomment the following 2 lines.
+# if you only want the f-score, then uncomment the following 2 lines.
 """
 from sklearn.metrics import f1_score
 print("F-score is ", '{0:.3g}'.format(f1_score(y_test, predicted, average='weighted')))

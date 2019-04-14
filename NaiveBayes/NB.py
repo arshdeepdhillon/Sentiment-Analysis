@@ -14,7 +14,7 @@ import timeit
 labels = []
 reviews = []
 #Now trying with Chandlers data
-with open("positive.txt") as f:
+with open("data_sets/positive.txt") as f:
     reviews = f.read().split("\n")
 for review in reviews:
     labels.append("positive")
@@ -22,7 +22,7 @@ f.close();
 labels = labels[:-1]
 reviews = reviews[:-1]
 
-with open("negative.txt") as f:
+with open("data_sets/negative.txt") as f:
     reviews2 = f.read().split("\n")
 for review2 in reviews2:
     reviews.append(review2)
@@ -61,7 +61,7 @@ print("Training Time: ", end="")
 print(endTrain - startTrain)
 print("Time on test: ", end="")
 print(endTest - startTest)
-print(score)
+print("Score: ", score)
 
 ####################  Evaluate the Classifier  ####################
 print("\n\n####################  Evaluate the Classifier  ####################\n")
